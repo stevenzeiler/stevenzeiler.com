@@ -1,0 +1,47 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+body {
+    font: '100%/1.5 Avenir,"Helvetica Neue",Helvetica,Arial,sans-serif';
+    text-align:center;
+}
+
+img {
+  border-radius: 50%;
+  height:150px;
+}
+
+li {
+  list-style: none;
+  padding: 2em 2em;
+  border-bottom: 1px solid #eee;
+  width:100%;
+  margin-left:-1em;
+}
+
+li:first-child {
+  padding: 1em 1em 2em 1em;
+}
+
+a {
+  text-decoration: none;
+  font-size:150%;
+  color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

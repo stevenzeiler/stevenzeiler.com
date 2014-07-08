@@ -182,25 +182,25 @@ define(function(require, exports, module) {
        
     function LaunchView() {
       var self = this;
-      this.template = document.getElementById('launchTemplate');
-      this.surface = new Surface({
-        content: _.template(this.template.innerHTML)(),
+      self.template = document.getElementById('launchTemplate');
+      self.surface = new Surface({
+        content: _.template(self.template.innerHTML)(),
         properties: {
           textAlign: 'center'
         }
       });
-      this.animationModifier = new Modifier({
+      self.animationModifier = new Modifier({
         transform: function() {
           return formYPosition.get();
         }
       });
-      this.positionModifier = new Modifier({
+      self.positionModifier = new Modifier({
         size: [300, 200],
-        align: [0.5, 0.3],
+        align: [0.5, 0.2],
         transform: Transform.translate(0, 200, 0),
         origin: [0.5, 0.5]
       });
-      this.surface.on('click', function(event) {
+      self.surface.on('click', function(event) {
         if (event.target.id === 'getARippleWallet'){
           self.close();
         }
@@ -244,7 +244,7 @@ define(function(require, exports, module) {
       this.positionModifier = new Modifier({
         size: [300, 200],
         align: [0.5, 0.3],
-        origin: [0.5, 0.5]
+        origin: [0.5, 0.9]
       });
       this.animationModifier = new Modifier({
         transform: function() {
@@ -252,10 +252,11 @@ define(function(require, exports, module) {
         }
       });
       this.surface = new ImageSurface({
-        content: './img/ripple-logo.jpg',
+        content: './img/steven_bow_tie_medium.jpg',
         classes: ['double-sided'],
         properties: {
-          textAlign: 'center'
+          textAlign: 'center',
+          borderRadius: '50%'
         }
       });
     }
