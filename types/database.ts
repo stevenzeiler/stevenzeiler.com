@@ -22,4 +22,12 @@ export interface Person {
   relationship_type: string[];
   // Joined data
   organization?: Organization;
+}
+
+export interface HealthWeightEntry {
+  id: string;
+  user_id: string;
+  weight_kg: number;
+  recorded_at: string;
+  created_at: string;
 } 
