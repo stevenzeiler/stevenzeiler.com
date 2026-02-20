@@ -243,7 +243,7 @@ export default function WeightTrackerPage() {
               <input
                 id="weight"
                 type="number"
-                step={unit === 'kg' ? 0.1 : 0.5}
+                step="0.01"
                 min="0"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
