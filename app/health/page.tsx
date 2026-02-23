@@ -96,6 +96,156 @@ export default function HealthPage() {
               </div>
             </Link>
           </motion.div>
+
+          <motion.div
+            initial={fadeInUp.initial}
+            animate={fadeInUp.animate}
+            transition={{ ...fadeInUp.transition, delay: 0.15 }}
+          >
+            <Link
+              href="/health/body-fat"
+              className="block bg-forest-900/80 hover:bg-forest-800/80 backdrop-blur-sm rounded-xl p-6 border border-forest-800 transition-colors group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center text-leaf-400 group-hover:bg-forest-700 transition-colors">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-xl font-semibold text-earth-100 group-hover:text-leaf-50">
+                    Body fat %
+                  </h2>
+                  <p className="text-earth-400 text-sm mt-0.5">
+                    Log your body fat percentage and view your history on a chart.
+                  </p>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="text-earth-400 group-hover:text-leaf-400 transition-colors"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={fadeInUp.initial}
+            animate={fadeInUp.animate}
+            transition={{ ...fadeInUp.transition, delay: 0.2 }}
+          >
+            <Link
+              href="/health/coach"
+              className="block bg-forest-900/80 hover:bg-forest-800/80 backdrop-blur-sm rounded-xl p-6 border border-forest-800 transition-colors group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center text-leaf-400 group-hover:bg-forest-700 transition-colors">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-xl font-semibold text-earth-100 group-hover:text-leaf-50">
+                    AI Coach
+                  </h2>
+                  <p className="text-earth-400 text-sm mt-0.5">
+                    Voice or text. Get daily plans, nutrition and workout—goal 12% body fat.
+                  </p>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="text-earth-400 group-hover:text-leaf-400 transition-colors"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={fadeInUp.initial}
+            animate={fadeInUp.animate}
+            transition={{ ...fadeInUp.transition, delay: 0.25 }}
+          >
+            <Link
+              href="/health/supplements"
+              className="block bg-forest-900/80 hover:bg-forest-800/80 backdrop-blur-sm rounded-xl p-6 border border-forest-800 transition-colors group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center text-leaf-400 group-hover:bg-forest-700 transition-colors">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M10.5 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5" />
+                    <path d="M19 8v2a2 2 0 0 1-2 2h-1" />
+                    <path d="M14 4v6a2 2 0 0 0 2 2h2" />
+                    <path d="M14 4h5a2 2 0 0 1 2 2v2" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-xl font-semibold text-earth-100 group-hover:text-leaf-50">
+                    Supplements
+                  </h2>
+                  <p className="text-earth-400 text-sm mt-0.5">
+                    Daily Wellness Calendar: vitamins, timing, checklist. Upload PDF for reference.
+                  </p>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="text-earth-400 group-hover:text-leaf-400 transition-colors"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
     </div>

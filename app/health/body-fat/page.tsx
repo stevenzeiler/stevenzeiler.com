@@ -15,17 +15,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import type { HealthWeightEntry } from '@/types/database';
-
-const KG_TO_LBS = 2.20462;
-
-function kgToLbs(kg: number): number {
-  return Math.round(kg * KG_TO_LBS * 10) / 10;
-}
-
-function lbsToKg(lbs: number): number {
-  return Math.round((lbs / KG_TO_LBS) * 100) / 100;
-}
+import type { HealthBodyFatEntry } from '@/types/database';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -44,18 +34,16 @@ const staggerItem = {
   animate: { opacity: 1, y: 0 },
 };
 
-export default function WeightTrackerPage() {
+export default function BodyFatTrackerPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  const [entries, setEntries] = useState<HealthWeightEntry[]>([]);
-  const [weight, setWeight] = useState('');
-  const [unit, setUnit] = useState<'kg' | 'lbs'>('kg');
+  const [entries, setEntries] = useState<HealthBodyFatEntry[]>([]);
+  const [bodyFatPct, setBodyFatPct] = useState('');
   const [recordedAt, setRecordedAt] = useState(() =>
     new Date().toISOString().slice(0, 16)
   );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [chartUnit, setChartUnit] = useState<'kg' | 'lbs'>('kg');
   const [justAdded, setJustAdded] = useState(false);
 
   const supabase = createBrowserClient(
@@ -70,7 +58,7 @@ export default function WeightTrackerPage() {
     if (!user) return;
 
     const { data, error: fetchError } = await supabase
-      .from('health_weight_entries')
+      .from('health_body_fat_entries')
       .select('*')
       .eq('user_id', user.id)
       .order('recorded_at', { ascending: false });
@@ -79,7 +67,7 @@ export default function WeightTrackerPage() {
       setError(fetchError.message);
       return;
     }
-    setEntries((data as HealthWeightEntry[]) ?? []);
+    setEntries((data as HealthBodyFatEntry[]) ?? []);
   }, [supabase]);
 
   useEffect(() => {
@@ -103,9 +91,9 @@ export default function WeightTrackerPage() {
     e.preventDefault();
     setError(null);
 
-    const num = parseFloat(weight);
-    if (Number.isNaN(num) || num <= 0) {
-      setError('Please enter a valid weight.');
+    const num = parseFloat(bodyFatPct);
+    if (Number.isNaN(num) || num < 0 || num > 100) {
+      setError('Please enter a body fat % between 0 and 100.');
       return;
     }
 
@@ -117,14 +105,15 @@ export default function WeightTrackerPage() {
       return;
     }
 
-    const weightKg = unit === 'lbs' ? lbsToKg(num) : num;
     setSubmitting(true);
 
-    const { error: insertError } = await supabase.from('health_weight_entries').insert({
-      user_id: user.id,
-      weight_kg: weightKg,
-      recorded_at: new Date(recordedAt).toISOString(),
-    });
+    const { error: insertError } = await supabase
+      .from('health_body_fat_entries')
+      .insert({
+        user_id: user.id,
+        body_fat_pct: num,
+        recorded_at: new Date(recordedAt).toISOString(),
+      });
 
     setSubmitting(false);
     if (insertError) {
@@ -132,7 +121,7 @@ export default function WeightTrackerPage() {
       return;
     }
 
-    setWeight('');
+    setBodyFatPct('');
     setRecordedAt(new Date().toISOString().slice(0, 16));
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1200);
@@ -141,7 +130,7 @@ export default function WeightTrackerPage() {
 
   const handleDelete = async (id: string) => {
     const { error: deleteError } = await supabase
-      .from('health_weight_entries')
+      .from('health_body_fat_entries')
       .delete()
       .eq('id', id);
 
@@ -169,8 +158,7 @@ export default function WeightTrackerPage() {
         year: '2-digit',
       }),
       fullDate: e.recorded_at,
-      kg: Number(e.weight_kg),
-      lbs: kgToLbs(Number(e.weight_kg)),
+      pct: Number(e.body_fat_pct),
     }));
 
   return (
@@ -204,9 +192,9 @@ export default function WeightTrackerPage() {
               </svg>
               Health
             </Link>
-            <h1 className="text-3xl font-bold text-earth-100">Weight tracker</h1>
+            <h1 className="text-3xl font-bold text-earth-100">Body fat %</h1>
             <p className="text-earth-300 mt-1">
-              Log your weight and view your history.
+              Log your body fat percentage and view your history.
             </p>
           </div>
         </motion.div>
@@ -233,56 +221,30 @@ export default function WeightTrackerPage() {
               </motion.div>
             )}
           </AnimatePresence>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <motion.div className="origin-center">
-              <label htmlFor="weight" className="block text-sm font-medium text-earth-300 mb-1">
-                Weight
-              </label>
-              <input
-                id="weight"
-                type="number"
-                step="0.01"
-                min="0"
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-                placeholder={unit === 'kg' ? 'e.g. 72.5' : 'e.g. 160'}
-                className="w-full bg-forest-800 border border-forest-700 rounded-lg px-4 py-2.5 text-earth-100 placeholder-earth-500 focus:outline-none focus:ring-2 focus:ring-leaf-500"
-              />
-            </motion.div>
-            <motion.div variants={staggerItem}>
-              <label className="block text-sm font-medium text-earth-300 mb-1">
-                Unit
-              </label>
-              <div className="flex rounded-lg overflow-hidden border border-forest-700">
-                <motion.button
-                  type="button"
-                  onClick={() => setUnit('kg')}
-                  whileTap={{ scale: 0.97 }}
-                  className={`flex-1 px-4 py-2.5 text-sm font-medium ${
-                    unit === 'kg'
-                      ? 'bg-leaf-600 text-earth-50'
-                      : 'bg-forest-800 text-earth-300 hover:bg-forest-700'
-                  }`}
-                >
-                  kg
-                </motion.button>
-                <motion.button
-                  type="button"
-                  onClick={() => setUnit('lbs')}
-                  whileTap={{ scale: 0.97 }}
-                  className={`flex-1 px-4 py-2.5 text-sm font-medium ${
-                    unit === 'lbs'
-                      ? 'bg-leaf-600 text-earth-50'
-                      : 'bg-forest-800 text-earth-300 hover:bg-forest-700'
-                  }`}
-                >
-                  lbs
-                </motion.button>
-              </div>
-            </motion.div>
-          </div>
           <motion.div variants={staggerItem}>
-            <label htmlFor="recordedAt" className="block text-sm font-medium text-earth-300 mb-1">
+            <label
+              htmlFor="bodyFatPct"
+              className="block text-sm font-medium text-earth-300 mb-1"
+            >
+              Body fat %
+            </label>
+            <input
+              id="bodyFatPct"
+              type="number"
+              step="0.1"
+              min="0"
+              max="100"
+              value={bodyFatPct}
+              onChange={(e) => setBodyFatPct(e.target.value)}
+              placeholder="e.g. 18.5"
+              className="w-full bg-forest-800 border border-forest-700 rounded-lg px-4 py-2.5 text-earth-100 placeholder-earth-500 focus:outline-none focus:ring-2 focus:ring-leaf-500"
+            />
+          </motion.div>
+          <motion.div variants={staggerItem}>
+            <label
+              htmlFor="recordedAt"
+              className="block text-sm font-medium text-earth-300 mb-1"
+            >
               Date & time
             </label>
             <input
@@ -322,35 +284,9 @@ export default function WeightTrackerPage() {
               transition={{ duration: 0.4 }}
               className="bg-forest-900/80 backdrop-blur-sm rounded-xl p-6 border border-forest-800"
             >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-earth-100">Weight history</h2>
-                <div className="flex rounded-lg overflow-hidden border border-forest-700">
-                  <motion.button
-                    type="button"
-                    onClick={() => setChartUnit('kg')}
-                    whileTap={{ scale: 0.96 }}
-                    className={`px-3 py-1.5 text-sm font-medium ${
-                      chartUnit === 'kg'
-                        ? 'bg-leaf-600 text-earth-50'
-                        : 'bg-forest-800 text-earth-300 hover:bg-forest-700'
-                    }`}
-                  >
-                    kg
-                  </motion.button>
-                  <motion.button
-                    type="button"
-                    onClick={() => setChartUnit('lbs')}
-                    whileTap={{ scale: 0.96 }}
-                    className={`px-3 py-1.5 text-sm font-medium ${
-                      chartUnit === 'lbs'
-                        ? 'bg-leaf-600 text-earth-50'
-                        : 'bg-forest-800 text-earth-300 hover:bg-forest-700'
-                    }`}
-                  >
-                    lbs
-                  </motion.button>
-                </div>
-              </div>
+              <h2 className="text-xl font-bold text-earth-100 mb-4">
+                Body fat % history
+              </h2>
               <motion.div
                 className="h-64 sm:h-80"
                 initial={{ opacity: 0, scale: 0.98 }}
@@ -371,10 +307,8 @@ export default function WeightTrackerPage() {
                     <YAxis
                       stroke="#9ca89e"
                       tick={{ fontSize: 12 }}
-                      domain={['dataMin - 2', 'dataMax + 2']}
-                      tickFormatter={(v) =>
-                        chartUnit === 'kg' ? `${v} kg` : `${v} lbs`
-                      }
+                      domain={[0, 'dataMax + 5']}
+                      tickFormatter={(v) => `${v}%`}
                     />
                     <Tooltip
                       contentStyle={{
@@ -383,20 +317,18 @@ export default function WeightTrackerPage() {
                         borderRadius: '8px',
                       }}
                       labelStyle={{ color: '#e5e7e0' }}
-                      formatter={(value: number) =>
-                        [chartUnit === 'kg' ? `${value} kg` : `${value} lbs`, chartUnit]
-                      }
+                      formatter={(value: number) => [`${value}%`, 'Body fat']}
                       labelFormatter={(label) => label}
                     />
                     <Legend />
                     <Line
                       type="monotone"
-                      dataKey={chartUnit}
+                      dataKey="pct"
                       stroke="#65a30d"
                       strokeWidth={2}
                       dot={{ fill: '#65a30d', r: 4 }}
                       activeDot={{ r: 6 }}
-                      name={chartUnit === 'kg' ? 'Weight (kg)' : 'Weight (lbs)'}
+                      name="Body fat %"
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -424,10 +356,7 @@ export default function WeightTrackerPage() {
                     >
                       <div>
                         <span className="font-medium text-earth-100">
-                          {Number(entry.weight_kg).toFixed(1)} kg
-                        </span>
-                        <span className="text-earth-400 ml-2">
-                          ({kgToLbs(Number(entry.weight_kg))} lbs)
+                          {Number(entry.body_fat_pct).toFixed(1)}%
                         </span>
                       </div>
                       <div className="flex items-center gap-3">
@@ -459,7 +388,7 @@ export default function WeightTrackerPage() {
             variants={staggerItem}
             className="text-earth-400 text-center py-8"
           >
-            No entries yet. Add your first weight above.
+            No entries yet. Add your first body fat % above.
           </motion.p>
         )}
       </motion.div>

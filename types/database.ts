@@ -30,4 +30,46 @@ export interface HealthWeightEntry {
   weight_kg: number;
   recorded_at: string;
   created_at: string;
+}
+
+export interface HealthBodyFatEntry {
+  id: string;
+  user_id: string;
+  body_fat_pct: number;
+  recorded_at: string;
+  created_at: string;
+}
+
+export interface CoachConversation {
+  id: string;
+  user_id: string;
+  created_at: string;
+  raw_message: string;
+  voice_url: string | null;
+  ai_response: string;
+  plan_json: Record<string, unknown> | null;
+}
+
+export interface CoachDailyLog {
+  id: string;
+  user_id: string;
+  date: string;
+  food_text: string | null;
+  vitamins: string[];
+  energy_level: number | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CoachPlan {
+  id: string;
+  user_id: string;
+  date: string;
+  calories: number | null;
+  macros: { protein?: number; carbs?: number; fat?: number };
+  meals: unknown[];
+  workout: { type?: string; duration_minutes?: number; exercises?: string[] };
+  created_at: string;
+  updated_at: string;
 } 
