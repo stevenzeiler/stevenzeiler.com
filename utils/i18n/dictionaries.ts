@@ -277,8 +277,19 @@ export const dictionaries = {
     },
     navigation: {
       home: 'Home',
+      meditation: 'Meditation',
+      yoga: 'Yoga',
+      corporate: 'Corporate',
+      writing: 'Writing',
+      about: 'About',
       bikram26: 'Bikram 26',
-      practice: 'Practice'
+      practice: 'Practice',
+      healthHub: 'Health',
+      healthWeight: 'Weight',
+      healthBodyFat: 'Body fat',
+      healthCoach: 'Coach',
+      healthSupplements: 'Supplements',
+      financeRippleLabs: 'Ripple Labs',
     }
   },
   es: {
@@ -559,8 +570,19 @@ export const dictionaries = {
     },
     navigation: {
       home: 'Inicio',
+      meditation: 'Meditación',
+      yoga: 'Yoga',
+      corporate: 'Empresas',
+      writing: 'Escritos',
+      about: 'Acerca de',
       bikram26: 'Bikram 26',
-      practice: 'Práctica'
+      practice: 'Práctica',
+      healthHub: 'Salud',
+      healthWeight: 'Peso',
+      healthBodyFat: 'Grasa corporal',
+      healthCoach: 'Entrenador',
+      healthSupplements: 'Suplementos',
+      financeRippleLabs: 'Ripple Labs',
     }
   }
 }; 

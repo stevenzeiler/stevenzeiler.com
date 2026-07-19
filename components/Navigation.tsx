@@ -29,8 +29,11 @@ export default function Navigation() {
         ]
       : [
           { href: '/', label: dict.home },
-          { href: '/yoga/bikram-26', label: dict.bikram26 },
-          { href: '/yoga/bikram-26/practice', label: dict.practice },
+          { href: '/meditation', label: dict.meditation },
+          { href: '/yoga/bikram-26', label: dict.yoga },
+          { href: '/corporate', label: dict.corporate },
+          { href: '/writing', label: dict.writing },
+          { href: '/about', label: dict.about },
         ];
 
   return (
