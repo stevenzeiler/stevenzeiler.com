@@ -27,6 +27,7 @@ export default function AdminDrawer() {
     { href: '/organizations', label: 'Organizations', icon: '🏢' },
     { href: '/residences', label: 'Residences', icon: '🏛️' },
     { href: '/journal', label: 'Journal', icon: '📔' },
+    { href: '/finance/ripple', label: 'Ripple Labs (equity)', icon: '📈' },
   ];
 
   const handleSignOut = async () => {
